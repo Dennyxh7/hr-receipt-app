@@ -1,0 +1,35 @@
+cd /workspaces/hr-receipt-app
+cat > shopify.app.toml << 'EOF'
+client_id = "8df7891db08d555dede97cd20fb8bb11"
+application_url = "https://example.com"
+embedded = true
+name = "hr-receipt"
+
+[access_scopes]
+scopes = "read_orders,write_orders"
+
+[pos]
+embedded = true
+
+[webhooks]
+api_version = "2027-01"
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/uninstalled"
+  topics = [ "app/uninstalled" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/scopes_update"
+  topics = [ "app/scopes_update" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/orders/create"
+  topics = [ "orders/create" ]
+
+[auth]
+redirect_urls = [ "https://example.com/api/auth" ]
+
+[build]
+include_config_on_deploy = true
+automatically_update_urls_on_dev = true
+EOF

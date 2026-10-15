@@ -1,0 +1,31 @@
+# HR Receipt — Holt Renfrew receipt capture + order lookup for Shopify POS
+#
+# 2026-01 is used deliberately:
+#   - native-screen navigation (shopify:point-of-sale/orders/<id>) exists from 2025-10
+#   - 2026-04+ changed showCameraScanner() to a full-screen overlay that hides the
+#     extension UI (open regression on community.shopify.dev), so stay on 2026-01
+#     until that is resolved.
+#
+# NOTE: `uid` must be unique per app. If you scaffolded this extension with
+# `shopify app generate extension`, keep the uid the CLI generated and only
+# replace the [[extensions.targeting]] blocks below.
+api_version = "2026-01"
+
+[[extensions]]
+type = "ui_extension"
+name = "HR Receipt"
+handle = "hr-receipt"
+uid = "a7403e32-3da3-b7a6-cbb5-7768a800676aba816f25"
+description = "Attach a Holt Renfrew receipt number to a POS sale and look orders up by it for returns/exchanges."
+
+[[extensions.targeting]]
+target = "pos.home.tile.render"
+module = "./src/Tile.jsx"
+
+[[extensions.targeting]]
+target = "pos.home.modal.render"
+module = "./src/Modal.jsx"
+
+[[extensions.targeting]]
+target = "pos.order-details.block.render"
+module = "./src/Block.jsx"
