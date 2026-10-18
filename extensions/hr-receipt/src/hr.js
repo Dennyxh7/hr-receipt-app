@@ -82,7 +82,6 @@ export const ORDER_CARD_FIELDS = `#graphql
   displayFinancialStatus
   displayFulfillmentStatus
   totalPriceSet { shopMoney { amount currencyCode } }
-  customer { displayName }
   lineItems(first: 10) { nodes { title quantity sku } }
 `;
 

@@ -139,7 +139,6 @@ function FindModal() {
                         </s-stack>
                         <s-text tone="subdued">
                           HR {hrFromTags(o.tags) || "—"} · {fmtDate(o.createdAt)}
-                          {o.customer?.displayName ? ` · ${o.customer.displayName}` : ""}
                         </s-text>
                         <s-text tone="subdued">{items}</s-text>
                         <s-text tone="subdued">{o.displayFinancialStatus} · {o.displayFulfillmentStatus}</s-text>
