@@ -1,13 +1,16 @@
-client_id = "8df7891db08d555dede97cd20fb8bb11"
+client_id = "5fb9a039b6932e6df7200965e70d7d8a"
+name = "hr-receipt"
 application_url = "https://example.com"
 embedded = true
-name = "hr-receipt"
 
 [access_scopes]
 scopes = "read_orders,write_orders"
 
 [pos]
 embedded = true
+
+[auth]
+redirect_urls = [ "https://example.com/api/auth" ]
 
 [webhooks]
 api_version = "2027-01"
@@ -23,9 +26,6 @@ api_version = "2027-01"
   [[webhooks.subscriptions]]
   uri = "/webhooks/orders/create"
   topics = [ "orders/create" ]
-
-[auth]
-redirect_urls = [ "https://example.com/api/auth" ]
 
 [build]
 include_config_on_deploy = true
