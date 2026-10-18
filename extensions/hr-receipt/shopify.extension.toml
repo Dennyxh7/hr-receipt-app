@@ -1,14 +1,10 @@
-# HR Receipt — Holt Renfrew receipt capture + order lookup for Shopify POS
+# HR Receipt v2 — attach the Holt Renfrew receipt number to a COMPLETED Shopify
+# POS order (post-purchase screen or any order's action menu), and look orders up
+# by it from the home tile. No webhook / server involved: everything is written
+# and read through POS Direct API access.
 #
-# 2026-01 is used deliberately:
-#   - native-screen navigation (shopify:point-of-sale/orders/<id>) exists from 2025-10
-#   - 2026-04+ changed showCameraScanner() to a full-screen overlay that hides the
-#     extension UI (open regression on community.shopify.dev), so stay on 2026-01
-#     until that is resolved.
-#
-# NOTE: `uid` must be unique per app. If you scaffolded this extension with
-# `shopify app generate extension`, keep the uid the CLI generated and only
-# replace the [[extensions.targeting]] blocks below.
+# 2026-01: native-screen navigation needs >= 2025-10; 2026-04+ changed the camera
+# scanner to a full-screen overlay. Re-test before bumping.
 api_version = "2026-01"
 
 [[extensions]]
@@ -16,15 +12,34 @@ type = "ui_extension"
 name = "HR Receipt"
 handle = "hr-receipt"
 uid = "a7403e32-3da3-b7a6-cbb5-7768a800676aba816f25"
-description = "Attach a Holt Renfrew receipt number to a POS sale and look orders up by it for returns/exchanges."
+description = "Attach a Holt Renfrew receipt number to a POS order and look orders up by it for returns/exchanges."
 
+# --- Home screen: find an order by HR receipt # -----------------------------
 [[extensions.targeting]]
 target = "pos.home.tile.render"
 module = "./src/Tile.jsx"
 
 [[extensions.targeting]]
 target = "pos.home.modal.render"
-module = "./src/Modal.jsx"
+module = "./src/FindModal.jsx"
+
+# --- Post-purchase screen (right after checkout): add HR receipt # ----------
+[[extensions.targeting]]
+target = "pos.purchase.post.block.render"
+module = "./src/PostPurchaseBlock.jsx"
+
+[[extensions.targeting]]
+target = "pos.purchase.post.action.render"
+module = "./src/AttachModal.jsx"
+
+# --- Order details (Orders > any order): add/edit HR receipt # ---------------
+[[extensions.targeting]]
+target = "pos.order-details.action.menu-item.render"
+module = "./src/OrderMenuItem.jsx"
+
+[[extensions.targeting]]
+target = "pos.order-details.action.render"
+module = "./src/AttachModal.jsx"
 
 [[extensions.targeting]]
 target = "pos.order-details.block.render"
